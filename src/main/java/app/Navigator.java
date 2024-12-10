@@ -11,7 +11,10 @@ import java.io.IOException;
 
 public class Navigator {
     public final static String selectAlgorithm = "AlgorithmSelection.fxml";
-    public final static String representationChoice = "RepresentationChoice.fxml";
+    public final static String inputWeights = "EdgeWeights.fxml";
+    public final static String visualizationChoice = "VisualizationChoice.fxml";
+    public final static String matrixVisualization = "MatrixVisualization.fxml";
+    public final static String graphVisualization = "GraphVisualization.fxml";
 
     public static void navigate(Event event, String form) {
         Node eventNode = (Node) event.getSource();
