@@ -8,26 +8,27 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import utils.Alerts;
 
+import static utils.SharedData.numVertices;
+
 public class AlgorithmSelectionController {
     @FXML
     private ComboBox<String> selectedAlgorithmComboBox;
     @FXML
-    private TextField nrVerticesTextField;
+    private TextField numVerticesTextField;
     @FXML
     private Button nextButton;
     private String selectedAlgorithm;
-    private Integer nrVertices;
 
     public void handleNextButton(ActionEvent event) {
         try {
-            nrVertices = Integer.parseInt(nrVerticesTextField.getText());
+            numVertices = Integer.parseInt(numVerticesTextField.getText());
             selectedAlgorithm = selectedAlgorithmComboBox.getValue();
 
             if (selectedAlgorithm == null) {
                 Alerts.errorMessage("Please select an algorithm");
                 return;
             }
-            if (nrVertices < 2) {
+            if (numVertices < 2) {
                 Alerts.errorMessage("Number of vertices must be at least 2");
                 return;
             }
