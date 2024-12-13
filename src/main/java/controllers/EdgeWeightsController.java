@@ -6,9 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import models.Graph;
 import utils.Alerts;
-
-import static utils.SharedData.numVertices;
 
 public class EdgeWeightsController {
 
@@ -22,12 +21,16 @@ public class EdgeWeightsController {
     private GridPane weightsGrid;
 
     private TextField[][] weightFields;
+    private Graph graph;
+    private int numVertices;
 
     public void initialize() {
         populateGrid();
     }
 
     private void populateGrid() {
+        graph = Graph.getInstance();
+        numVertices = graph.getVertices();
         weightFields = new TextField[numVertices][numVertices];
 
         for (int i = 0; i < numVertices; i++) {
@@ -65,6 +68,7 @@ public class EdgeWeightsController {
                             Integer.MAX_VALUE / 2 : Integer.parseInt(input);
                 }
             }
+            graph.setAdjacencyMatrix(adjacencyMatrix);
             Navigator.navigate(event, Navigator.visualizationChoice);
         } catch (NumberFormatException e) {
             Alerts.errorMessage("Please enter valid weights (integers or '∞').");
