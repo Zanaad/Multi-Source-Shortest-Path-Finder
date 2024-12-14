@@ -97,7 +97,6 @@ public class GraphVisualizationController {
     private void drawGraph(int[][] matrix, int[][] previousMatrix, int focusedIndex) {
         graphPane.getChildren().clear();
 
-        // Center and radius for circular layout
         double centerX = 300;
         double centerY = 200;
         double radius = 150;
@@ -105,7 +104,6 @@ public class GraphVisualizationController {
         Circle[] nodes = new Circle[numVertices];
         double[] angles = new double[numVertices];
 
-        // Place nodes in circular positions
         for (int i = 0; i < numVertices; i++) {
             angles[i] = i * 2 * Math.PI / numVertices;
             double x = centerX + radius * Math.cos(angles[i]);
@@ -121,10 +119,8 @@ public class GraphVisualizationController {
             nodes[i] = node;
         }
 
-        // Draw edges and weights
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
-                // Skip edges with "infinite" weight or self-loops
                 if (matrix[i][j] == Integer.MAX_VALUE / 2 || i == j) {
                     continue;
                 }
@@ -134,19 +130,16 @@ public class GraphVisualizationController {
                 double x2 = centerX + radius * Math.cos(angles[j]);
                 double y2 = centerY + radius * Math.sin(angles[j]);
 
-                // Draw edge
                 Line edge = new Line(x1, y1, x2, y2);
                 edge.setStyle("-fx-stroke: black;");
                 graphPane.getChildren().add(edge);
 
-                // Weight label at the midpoint
                 double midX = (x1 + x2) / 2;
                 double midY = (y1 + y2) / 2;
 
                 String weightText = String.valueOf(matrix[i][j]);
                 Text weightLabel = new Text(midX, midY, weightText);
 
-                // Highlight changes
                 if (previousMatrix != null && previousMatrix[i][j] != matrix[i][j]) {
                     weightLabel.setStyle("-fx-fill: red; -fx-font-weight: bold;");
                 }
@@ -154,7 +147,6 @@ public class GraphVisualizationController {
             }
         }
 
-        // Highlight the focused vertex
         if (focusedIndex != -1) {
             nodes[focusedIndex].setStyle("-fx-fill: yellow; -fx-stroke: black;");
         }
@@ -163,10 +155,11 @@ public class GraphVisualizationController {
     private boolean hasNegativeCycle(int[][] matrix) {
         for (int i = 0; i < numVertices; i++) {
             if (matrix[i][i] < 0) {
-                return true; // Negative cycle detected
+                return true;
             }
         }
         return false;
     }
 }
+
 
