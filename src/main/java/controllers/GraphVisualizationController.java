@@ -71,8 +71,8 @@ public class GraphVisualizationController {
 
         // Check for negative weight cycles
         if (hasNegativeCycle(finalMatrix)) {
-            resultText.setText("Graph contains a negative weight cycle. Cannot calculate shortest paths.");
-            Alerts.errorMessage("Negative weight cycle detected!");
+            resultText.setText("Graph contains a negative weight cycle.");
+            Alerts.errorMessage("Negative weight cycle!");
             return;
         }
 
