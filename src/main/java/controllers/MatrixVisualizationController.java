@@ -1,6 +1,8 @@
 package controllers;
 
 import algorithms.FloydWarshall;
+import algorithms.JohnsonsAlgorithm;
+import app.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,8 +11,11 @@ import javafx.scene.layout.GridPane;
 import models.Graph;
 import utils.Alerts;
 
+import static utils.SharedData.selectedAlgorithm;
+
 public class MatrixVisualizationController {
 
+    public Button backButton;
     @FXML
     private Button nextButton;
 
@@ -18,20 +23,30 @@ public class MatrixVisualizationController {
     private GridPane weightsGrid;
 
     private int[][][] stepMatrices;
+    private int[][] johnsonsResult;
     private int numVertices;
     private int currentStep = 0;
     private TextField[][] matrixFields;
+    private boolean isFloydWarshall = true; // Default to Floyd-Warshall
 
     public void initialize() {
         Graph graph = Graph.getInstance();
         numVertices = graph.getVertices();
 
-        // Get step-by-step matrices
-        stepMatrices = FloydWarshall.findShortestPathsStepByStep(graph);
-        matrixFields = new TextField[numVertices][numVertices];
-
-        // Initialize grid with the first matrix (step 0)
-        populateGrid(stepMatrices[0], null, -1);
+        if ("Floyd-Warshall".equalsIgnoreCase(selectedAlgorithm)) {
+            isFloydWarshall = true;
+            stepMatrices = FloydWarshall.findShortestPathsStepByStep(graph);
+            matrixFields = new TextField[numVertices][numVertices];
+            populateGrid(stepMatrices[0], null, -1);
+        } else if ("Johnson".equalsIgnoreCase(selectedAlgorithm)) {
+            isFloydWarshall = false;
+            johnsonsResult = JohnsonsAlgorithm.findShortestPaths(graph);
+            matrixFields = new TextField[numVertices][numVertices];
+            populateGrid(johnsonsResult, null, -1);
+            nextButton.setDisable(true);
+        } else {
+            Alerts.errorMessage("Unknown algorithm selected.");
+        }
     }
 
     private void populateGrid(int[][] matrix, int[][] previousMatrix, int focusedIndex) {
@@ -83,5 +98,10 @@ public class MatrixVisualizationController {
         populateGrid(currentMatrix, previousMatrix, currentStep);
 
         currentStep++;
+    }
+
+    @FXML
+    public void handleBackButton(ActionEvent event) {
+        Navigator.navigate(event, Navigator.visualizationChoice);
     }
 }
