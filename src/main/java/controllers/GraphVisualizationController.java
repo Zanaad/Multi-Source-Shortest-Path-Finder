@@ -1,6 +1,7 @@
 package controllers;
 
 import algorithms.FloydWarshall;
+import app.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -94,6 +95,7 @@ public class GraphVisualizationController {
         resultText.setText(results.toString());
         Alerts.successMessage("Calculation completed.");
     }
+
     private void drawGraph(int[][] matrix, int[][] previousMatrix, int focusedIndex) {
         graphPane.getChildren().clear();
 
@@ -159,6 +161,10 @@ public class GraphVisualizationController {
             }
         }
         return false;
+    }
+
+    public void handleBackButton(ActionEvent event) {
+        Navigator.navigate(event, Navigator.visualizationChoice);
     }
 }
 

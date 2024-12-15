@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import models.Graph;
 import utils.Alerts;
 
+import static utils.SharedData.selectedAlgorithm;
+
 public class AlgorithmSelectionController {
     @FXML
     private ComboBox<String> selectedAlgorithmComboBox;
@@ -16,7 +18,6 @@ public class AlgorithmSelectionController {
     private TextField numVerticesTextField;
     @FXML
     private Button nextButton;
-    private String selectedAlgorithm;
     private Graph graph;
     private int numVertices;
 

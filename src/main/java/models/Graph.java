@@ -44,6 +44,7 @@ public class Graph {
 
     public void setAdjacencyMatrix(int[][] adjacencyMatrix) {
         this.adjacencyMatrix = adjacencyMatrix;
+        updateEdgesFromMatrix();
     }
 
     public List<Edge> getEdges() {
@@ -56,5 +57,16 @@ public class Graph {
 
     public void setVertices(int numVertices) {
         this.numVertices = numVertices;
+    }
+
+    private void updateEdgesFromMatrix() {
+        edges.clear(); // Clear any existing edges
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                if (i != j && adjacencyMatrix[i][j] != Integer.MAX_VALUE / 2) {
+                    edges.add(new Edge(i, j, adjacencyMatrix[i][j]));
+                }
+            }
+        }
     }
 }

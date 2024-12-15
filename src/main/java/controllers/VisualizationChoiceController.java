@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 
 public class VisualizationChoiceController {
 
+    public Button backButton;
     @FXML
     private Button graphVisualizationButton;
 
@@ -24,4 +25,7 @@ public class VisualizationChoiceController {
         Navigator.navigate(event, Navigator.matrixVisualization);
     }
 
+    public void handleBackButton(ActionEvent event) {
+        Navigator.navigate(event, Navigator.inputWeights);
+    }
 }

@@ -11,6 +11,7 @@ import utils.Alerts;
 
 public class EdgeWeightsController {
 
+    public Button backButton;
     @FXML
     private Button nextButton;
 
@@ -74,5 +75,9 @@ public class EdgeWeightsController {
             Alerts.errorMessage("Please enter valid weights (integers or '∞').");
         }
 
+    }
+
+    public void handleBackButton(ActionEvent event) {
+        Navigator.navigate(event, Navigator.selectAlgorithm);
     }
 }
