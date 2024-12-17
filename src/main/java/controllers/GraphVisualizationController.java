@@ -130,3 +130,41 @@ public class GraphVisualizationController {
     }
 
 
+    private void showNodeInfo(int nodeIndex) {
+        if (shortestPaths == null) {
+            resultText.setText("Shortest paths not calculated yet.");
+            return;
+        }
+
+        // Display shortest paths from the selected node
+        String nodeLabel = String.valueOf((char) ('A' + nodeIndex));
+        StringBuilder sb = new StringBuilder("Shortest paths from node " + nodeLabel + ":\n");
+
+        for (int i = 0; i < numVertices; i++) {
+            if (i != nodeIndex) {
+                sb.append("To ").append((char) ('A' + i))
+                        .append(": ").append(shortestPaths[nodeIndex][i]).append("\n");
+            }
+        }
+
+        resultText.setText(sb.toString());
+    }
+
+    private void showPathBetweenNodes(int startNode, int endNode) {
+        if (shortestPaths == null) {
+            resultText.setText("Shortest paths not calculated yet.");
+            return;
+        }
+
+        String startNodeLabel = String.valueOf((char) ('A' + startNode));
+        String endNodeLabel = String.valueOf((char) ('A' + endNode));
+        int pathLength = shortestPaths[startNode][endNode];
+
+        if (pathLength == Integer.MAX_VALUE / 2) {
+            resultText.setText("No path exists between " + startNodeLabel + " and " + endNodeLabel);
+        } else {
+            resultText.setText("Shortest path from " + startNodeLabel + " to " + endNodeLabel + ": " + pathLength);
+        }
+    }
+}
+
