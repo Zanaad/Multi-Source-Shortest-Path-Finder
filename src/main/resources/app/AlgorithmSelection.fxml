@@ -9,20 +9,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="900.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AlgorithmSelectionController">
-    <Label layoutX="69.0" layoutY="54.0" styleClass="title-label" text="Select the algorithm and number of vertices">
+    <Label layoutX="218.0" layoutY="100.0" styleClass="title-label" text="Select the algorithm and number of vertices">
         <font>
             <Font size="24.0"/>
         </font>
     </Label>
-    <Label layoutX="134.0" layoutY="127.0" text="Algorithm">
+    <Label layoutX="283.0" layoutY="220.0" text="Algorithm">
         <font>
             <Font size="14.0"/>
         </font>
     </Label>
-    <ComboBox fx:id="selectedAlgorithmComboBox" layoutX="300.0" layoutY="122.0" prefWidth="150.0">
+    <ComboBox fx:id="selectedAlgorithmComboBox" layoutX="449.0" layoutY="215.0" prefWidth="150.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Floyd-Warshall"/>
@@ -30,13 +30,13 @@
             </FXCollections>
         </items>
     </ComboBox>
-    <Label layoutX="110.0" layoutY="200.0" text="Number of vertices">
+    <Label layoutX="259.0" layoutY="293.0" text="Number of vertices">
         <font>
             <Font size="14.0"/>
         </font>
     </Label>
-    <TextField fx:id="numVerticesTextField" layoutX="301.0" layoutY="196.0"/>
-    <Button fx:id="nextButton" layoutX="455.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleNextButton"
+    <TextField fx:id="numVerticesTextField" layoutX="450.0" layoutY="289.0"/>
+    <Button fx:id="nextButton" layoutX="750.0" layoutY="499.0" mnemonicParsing="false" onAction="#handleNextButton"
             prefHeight="30.0" prefWidth="74.0" text="Next">
         <font>
             <Font size="14.0"/>

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VisualizationChoiceController">
     <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton"
             prefHeight="26.0" prefWidth="28.0">
@@ -17,20 +17,20 @@
             </ImageView>
         </graphic>
     </Button>
-    <Label layoutX="178.0" layoutY="40.0" styleClass="title-label" text="Choose visualization">
+    <Label layoutX="340.0" layoutY="133.0" styleClass="title-label" text="Choose visualization">
         <font>
             <Font size="24.0"/>
         </font>
     </Label>
-    <Button fx:id="matrixVisualizationButton" layoutX="129.0" layoutY="139.0" mnemonicParsing="false"
-            onAction="#handleMatrixVisualization" prefHeight="34.0" prefWidth="133.0" text="Matrix Visualization"/>
-    <Button fx:id="graphVisualizationButton" layoutX="320.0" layoutY="139.0" mnemonicParsing="false"
-            onAction="#handleGraphVisualization" prefHeight="34.0" prefWidth="133.0" text="Graph Visualization"/>
-    <ImageView fitHeight="68.0" fitWidth="98.0" layoutX="162.0" layoutY="200.0" pickOnBounds="true"
+    <Button fx:id="matrixVisualizationButton" layoutX="279.0" layoutY="242.0" mnemonicParsing="false"
+            onAction="#handleMatrixVisualization" prefHeight="40.0" prefWidth="150.0" text="Matrix Visualization"/>
+    <Button fx:id="graphVisualizationButton" layoutX="470.0" layoutY="242.0" mnemonicParsing="false"
+            onAction="#handleGraphVisualization" prefHeight="40.0" prefWidth="150.0" text="Graph Visualization"/>
+    <ImageView fitHeight="84.0" fitWidth="84.0" layoutX="313.0" layoutY="310.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@../icons/mathematics.png"/>
     </ImageView>
-    <ImageView fitHeight="68.0" fitWidth="98.0" layoutX="353.0" layoutY="200.0" pickOnBounds="true"
+    <ImageView fitHeight="84.0" fitWidth="84.0" layoutX="504.0" layoutY="310.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@../icons/knowledge-graph.png"/>
     </ImageView>

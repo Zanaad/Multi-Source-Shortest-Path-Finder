@@ -11,6 +11,10 @@ import javafx.scene.layout.GridPane;
 import models.Graph;
 import utils.Alerts;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static utils.SharedData.selectedAlgorithm;
 
 public class MatrixVisualizationController {
@@ -22,35 +26,40 @@ public class MatrixVisualizationController {
     @FXML
     private GridPane weightsGrid;
 
-    private int[][][] stepMatrices;
-    private int[][] johnsonsResult;
+    private int[][] previousMatrix;
     private int numVertices;
     private int currentStep = 0;
     private TextField[][] matrixFields;
-    private boolean isFloydWarshall = true; // Default to Floyd-Warshall
+    private Graph graph;
 
     public void initialize() {
-        Graph graph = Graph.getInstance();
+        graph = Graph.getInstance();
         numVertices = graph.getVertices();
+        matrixFields = new TextField[numVertices][numVertices];
 
         if ("Floyd-Warshall".equalsIgnoreCase(selectedAlgorithm)) {
-            isFloydWarshall = true;
-            stepMatrices = FloydWarshall.findShortestPathsStepByStep(graph);
-            matrixFields = new TextField[numVertices][numVertices];
-            populateGrid(stepMatrices[0], null, -1);
+            // Generate the initial matrix (step 0)
+            previousMatrix = graph.getAdjacencyMatrix();
+            populateGrid(previousMatrix, null, -1);
         } else if ("Johnson".equalsIgnoreCase(selectedAlgorithm)) {
-            isFloydWarshall = false;
-            johnsonsResult = JohnsonsAlgorithm.findShortestPaths(graph);
-            matrixFields = new TextField[numVertices][numVertices];
-            populateGrid(johnsonsResult, null, -1);
+            int[][] johnsonResult = JohnsonsAlgorithm.findShortestPaths(graph);
+            populateGrid(johnsonResult, null, -1);
             nextButton.setDisable(true);
         } else {
             Alerts.errorMessage("Unknown algorithm selected.");
         }
     }
 
-    private void populateGrid(int[][] matrix, int[][] previousMatrix, int focusedIndex) {
+    private void populateGrid(int[][] matrix, List<int[]> changedPositions, int focusedIndex) {
         weightsGrid.getChildren().clear(); // Clear existing grid elements
+        Set<String> changesSet = new HashSet<>(); // Set for fast lookup of changes
+
+        if (changedPositions != null) {
+            for (int[] pos : changedPositions) {
+                changesSet.add(pos[0] + "," + pos[1]);
+            }
+        }
+
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 TextField field = new TextField();
@@ -62,18 +71,16 @@ public class MatrixVisualizationController {
                 String valueText = matrix[i][j] == Integer.MAX_VALUE / 2 ? "∞" : String.valueOf(matrix[i][j]);
                 field.setText(valueText);
 
-                // If there is a previous matrix and the value has changed, apply a color
-                if (previousMatrix != null && previousMatrix[i][j] != matrix[i][j]) {
-                    field.setStyle("-fx-background-color: #FFCC00;"); // Yellow color for changed cells
+                // Highlight changed cells
+                if (changesSet.contains(i + "," + j)) {
+                    field.setStyle("-fx-background-color: #FFCC00;"); // Yellow for changed cells
                 } else {
-                    field.setStyle(""); // Reset the style for unchanged cells
+                    field.setStyle(""); // Reset style
                 }
 
-                // Apply a distinct color to the row and column of the current focused vertex (k)
-                if (focusedIndex != -1) {
-                    if (i == focusedIndex || j == focusedIndex) {
-                        field.setStyle("-fx-background-color: #ADD8E6;"); // Light Blue for focused row/column
-                    }
+                // Highlight focused row/column
+                if (focusedIndex != -1 && (i == focusedIndex || j == focusedIndex)) {
+                    field.setStyle("-fx-background-color: #ADD8E6;"); // Light blue
                 }
 
                 weightsGrid.add(field, j, i);
@@ -83,20 +90,20 @@ public class MatrixVisualizationController {
     }
 
     @FXML
-    void handleNextButton(ActionEvent event) {
+    void handleNextButton() {
         if (currentStep >= numVertices) {
             Alerts.successMessage("Algorithm completed. No more steps.");
             nextButton.setDisable(true);
             return;
         }
 
-        // Get the current and previous matrices
-        int[][] currentMatrix = stepMatrices[currentStep + 1];
-        int[][] previousMatrix = stepMatrices[currentStep];
+        // Generate the matrix for the current step
+        FloydWarshall.StepResult result = FloydWarshall.generateStep(graph, currentStep);
 
-        // Display the matrix for the current step, highlighting the changes and focusing on the current row/column
-        populateGrid(currentMatrix, previousMatrix, currentStep);
+        // Display the matrix, highlighting changes
+        populateGrid(result.matrix, result.changedPositions, currentStep);
 
+        // Update the previous matrix and step
         currentStep++;
     }
 

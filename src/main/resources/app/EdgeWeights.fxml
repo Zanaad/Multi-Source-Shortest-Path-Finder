@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EdgeWeightsController">
     <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton"
             prefHeight="26.0" prefWidth="28.0">
@@ -19,19 +19,21 @@
             </ImageView>
         </graphic>
     </Button>
-    <Label layoutX="102.0" layoutY="30.0" styleClass="title-label" text="Please enter the weights of the edges">
+    <Label layoutX="241.0" layoutY="57.0" styleClass="title-label" text="Please enter the weights of the edges">
         <font>
             <Font size="24.0"/>
         </font>
     </Label>
-    <ScrollPane layoutX="59.0" layoutY="71.0" prefHeight="284.0" prefWidth="495.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0">
-            <GridPane fx:id="verticesGrid" layoutX="22.0" layoutY="45.0" prefHeight="250.0" prefWidth="150.0">
-            </GridPane>
-            <GridPane fx:id="weightsGrid" layoutX="87.0" layoutY="45.0" prefHeight="250.0" prefWidth="300.0">
-            </GridPane>
-        </AnchorPane>
-    </ScrollPane>
-    <Button fx:id="nextButton" layoutX="503.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleNextButton"
+    <Button fx:id="nextButton" layoutX="786.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleNextButton"
             prefHeight="26.0" prefWidth="50.0" text="Next"/>
+    <ScrollPane layoutX="150.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0">
+                <GridPane fx:id="verticesGrid" layoutX="50.0" layoutY="66.0" prefHeight="250.0" prefWidth="150.0">
+                </GridPane>
+                <GridPane fx:id="weightsGrid" layoutX="222.0" layoutY="66.0" prefHeight="250.0" prefWidth="300.0">
+                </GridPane>
+            </AnchorPane>
+        </content>
+    </ScrollPane>
 </AnchorPane>

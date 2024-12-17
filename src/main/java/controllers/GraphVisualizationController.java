@@ -12,6 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.input.MouseEvent;
 import models.Graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GraphVisualizationController {
 
     @FXML
@@ -22,6 +25,7 @@ public class GraphVisualizationController {
 
     @FXML
     private Canvas graphCanvas;
+    private FloydWarshall.PathResult pathResult;
 
     private Graph graph;
     private int[][] shortestPaths;
@@ -29,6 +33,8 @@ public class GraphVisualizationController {
     private int radius = 30;  // Radius for nodes
     private double[] nodePositionsX;
     private double[] nodePositionsY;
+    private List<int[]> highlightedEdges = new ArrayList<>();
+
 
     private Integer[] highlightedNodes = new Integer[2]; // Array to store two highlighted nodes
     private Integer highlightedNode = null; // Node to be highlighted
@@ -46,7 +52,8 @@ public class GraphVisualizationController {
 
         // Calculate shortest paths if they are not yet calculated
         if (shortestPaths == null) {
-            shortestPaths = FloydWarshall.findShortestPaths(graph);
+            pathResult = FloydWarshall.findShortestPaths(graph);
+            shortestPaths = pathResult.distances; // For distances only
         }
 
         renderGraph(adjacencyMatrix);
@@ -68,24 +75,30 @@ public class GraphVisualizationController {
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
 
         // Draw edges
-        gc.setStroke(Color.BLACK);
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (adjacencyMatrix[i][j] != 0 && adjacencyMatrix[i][j] != Integer.MAX_VALUE / 2) {
+                    // Highlight the edge if it's in the list
+                    if (isEdgeHighlighted(i, j)) {
+                        gc.setStroke(Color.RED);
+                        gc.setLineWidth(3); // Make highlighted edges thicker
+                    } else {
+                        gc.setStroke(Color.BLACK);
+                        gc.setLineWidth(1);
+                    }
+
                     gc.strokeLine(nodePositionsX[i], nodePositionsY[i], nodePositionsX[j], nodePositionsY[j]);
+                    gc.setFill(Color.BLACK);
+
                     // Draw weight label in the middle of the edge
-                    gc.fillText(String.valueOf(adjacencyMatrix[i][j]),
-                            (nodePositionsX[i] + nodePositionsX[j]) / 2,
-                            (nodePositionsY[i] + nodePositionsY[j]) / 2);
+                    gc.fillText(String.valueOf(adjacencyMatrix[i][j]), (nodePositionsX[i] + nodePositionsX[j]) / 2, (nodePositionsY[i] + nodePositionsY[j]) / 2);
                 }
             }
         }
 
         // Draw nodes
-        gc.setFill(Color.BLUE);
         for (int i = 0; i < numVertices; i++) {
-            if (highlightedNodes[0] != null && highlightedNodes[0] == i ||
-                    highlightedNodes[1] != null && highlightedNodes[1] == i) {
+            if (highlightedNodes[0] != null && highlightedNodes[0] == i || highlightedNodes[1] != null && highlightedNodes[1] == i) {
                 gc.setFill(Color.RED); // Highlight selected nodes in RED
             } else {
                 gc.setFill(Color.BLUE); // Default color
@@ -96,6 +109,15 @@ public class GraphVisualizationController {
             gc.setFill(Color.WHITE);
             gc.fillText(String.valueOf((char) ('A' + i)), nodePositionsX[i] - 10, nodePositionsY[i] + 5);
         }
+    }
+
+    private boolean isEdgeHighlighted(int from, int to) {
+        for (int[] edge : highlightedEdges) {
+            if (edge[0] == from && edge[1] == to) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @FXML
@@ -118,10 +140,12 @@ public class GraphVisualizationController {
                     highlightedNodes[1] = i;
                     showPathBetweenNodes(highlightedNodes[0], i);
                 } else {
-                    // Reset both selections
-                    highlightedNodes[0] = null;
+                    // Reset selections when a third node is clicked
+                    highlightedNodes[0] = i;  // Start fresh with the clicked node
                     highlightedNodes[1] = null;
-                    resultText.setText("");
+                    highlightedEdges.clear(); // Clear any highlighted edges
+                    resultText.setText("");    // Clear path result text
+                    showNodeInfo(i);           // Show info for the newly clicked node
                 }
                 renderGraph(graph.getAdjacencyMatrix()); // Re-render the graph
                 break;
@@ -131,19 +155,23 @@ public class GraphVisualizationController {
 
 
     private void showNodeInfo(int nodeIndex) {
-        if (shortestPaths == null) {
+        if (pathResult == null) {
             resultText.setText("Shortest paths not calculated yet.");
             return;
         }
 
-        // Display shortest paths from the selected node
         String nodeLabel = String.valueOf((char) ('A' + nodeIndex));
         StringBuilder sb = new StringBuilder("Shortest paths from node " + nodeLabel + ":\n");
 
         for (int i = 0; i < numVertices; i++) {
             if (i != nodeIndex) {
-                sb.append("To ").append((char) ('A' + i))
-                        .append(": ").append(shortestPaths[nodeIndex][i]).append("\n");
+                int distance = pathResult.distances[nodeIndex][i];
+                if (distance == Integer.MAX_VALUE / 2) {
+                    sb.append("To ").append((char) ('A' + i)).append(": No path exists\n");
+                } else {
+                    String path = reconstructPath(nodeIndex, i, pathResult.next);
+                    sb.append("To ").append((char) ('A' + i)).append(": ").append(distance).append(" via path: ").append(path).append("\n");
+                }
             }
         }
 
@@ -151,20 +179,52 @@ public class GraphVisualizationController {
     }
 
     private void showPathBetweenNodes(int startNode, int endNode) {
-        if (shortestPaths == null) {
+        if (pathResult == null) {
             resultText.setText("Shortest paths not calculated yet.");
             return;
         }
 
         String startNodeLabel = String.valueOf((char) ('A' + startNode));
         String endNodeLabel = String.valueOf((char) ('A' + endNode));
-        int pathLength = shortestPaths[startNode][endNode];
+        int pathLength = pathResult.distances[startNode][endNode];
 
         if (pathLength == Integer.MAX_VALUE / 2) {
             resultText.setText("No path exists between " + startNodeLabel + " and " + endNodeLabel);
+            highlightedEdges.clear();
         } else {
-            resultText.setText("Shortest path from " + startNodeLabel + " to " + endNodeLabel + ": " + pathLength);
+            highlightedEdges.clear(); // Reset previous highlights
+            String path = reconstructPath(startNode, endNode, pathResult.next);
+
+            // Collect edges in the shortest path
+            int current = startNode;
+            while (current != endNode) {
+                int next = pathResult.next[current][endNode];
+                highlightedEdges.add(new int[]{current, next});
+                current = next;
+            }
+
+            resultText.setText("Shortest path from " + startNodeLabel + " to " + endNodeLabel + " is " + pathLength + " via path: " + path);
         }
+
+        renderGraph(graph.getAdjacencyMatrix()); // Re-render the graph to highlight edges
     }
+
+    public static String reconstructPath(int start, int end, int[][] next) {
+        if (next[start][end] == -1) {
+            return "No path exists";
+        }
+        StringBuilder path = new StringBuilder();
+        int current = start;
+
+        path.append((char) ('A' + current)); // Start node label
+        while (current != end) {
+            current = next[current][end];
+            path.append(" -> ").append((char) ('A' + current));
+        }
+        return path.toString();
+    }
+
 }
+
+
 
