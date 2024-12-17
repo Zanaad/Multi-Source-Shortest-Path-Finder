@@ -4,168 +4,129 @@ import algorithms.FloydWarshall;
 import app.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
 import models.Graph;
-import utils.Alerts;
 
 public class GraphVisualizationController {
 
     @FXML
-    private Button calculateButton;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    private Pane graphPane;
+    private Button calculatePathsButton;
 
     @FXML
     private Text resultText;
 
-    private int[][][] stepMatrices; // Step-by-step matrices
-    private int currentStep = 0;
+    @FXML
+    private Canvas graphCanvas;
+
+    private Graph graph;
+    private int[][] shortestPaths;
     private int numVertices;
+    private int radius = 30;  // Radius for nodes
+    private double[] nodePositionsX;
+    private double[] nodePositionsY;
+
+    private Integer[] highlightedNodes = new Integer[2]; // Array to store two highlighted nodes
+    private Integer highlightedNode = null; // Node to be highlighted
 
     public void initialize() {
-        Graph graph = Graph.getInstance();
+        graph = Graph.getInstance();
         numVertices = graph.getVertices();
+        int[][] adjacencyMatrix = graph.getAdjacencyMatrix();
 
-        // Get step-by-step matrices for visualization
-        stepMatrices = FloydWarshall.findShortestPathsStepByStep(graph);
+        nodePositionsX = new double[numVertices];
+        nodePositionsY = new double[numVertices];
 
-        if (stepMatrices == null || stepMatrices.length == 0) {
-            Alerts.errorMessage("Error initializing graph. Please check the input.");
-            return;
+        // Calculate node positions for a circular layout
+        calculateNodePositions();
+
+        // Calculate shortest paths if they are not yet calculated
+        if (shortestPaths == null) {
+            shortestPaths = FloydWarshall.findShortestPaths(graph);
         }
 
-        // Draw the initial graph (step 0)
-        drawGraph(stepMatrices[0], null, -1);
-
-        // Configure result text
-        resultText.setLayoutX(10);
-        resultText.setLayoutY(420);
-        resultText.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-        graphPane.getChildren().add(resultText);
+        renderGraph(adjacencyMatrix);
     }
 
-    @FXML
-    void handleNextButton(ActionEvent event) {
-        if (currentStep >= stepMatrices.length - 1) {
-            Alerts.successMessage("Algorithm completed. No more steps.");
-            nextButton.setDisable(true);
-            return;
-        }
-
-        // Draw the graph for the next step
-        drawGraph(stepMatrices[currentStep + 1], stepMatrices[currentStep], currentStep);
-        currentStep++;
-    }
-
-    @FXML
-    void handleCalculateButton(ActionEvent event) {
-        Graph graph = Graph.getInstance();
-        int[][] finalMatrix = FloydWarshall.findShortestPaths(graph);
-
-        // Check for negative weight cycles
-        if (hasNegativeCycle(finalMatrix)) {
-            resultText.setText("Graph contains a negative weight cycle.");
-            Alerts.errorMessage("Negative weight cycle!");
-            return;
-        }
-
-        // Display shortest paths for all pairs
-        StringBuilder results = new StringBuilder("Shortest paths: ");
-        for (int source = 0; source < numVertices; source++) {
-            for (int target = 0; target < numVertices; target++) {
-                if (finalMatrix[source][target] == Integer.MAX_VALUE / 2) {
-                    results.append("No path from ").append((char) ('A' + source))
-                            .append(" to ").append((char) ('A' + target)).append("\n");
-                } else {
-                    results.append("Distance from ").append((char) ('A' + source))
-                            .append(" to ").append((char) ('A' + target)).append(": ")
-                            .append(finalMatrix[source][target]).append("\n");
-                }
-            }
-        }
-
-        resultText.setText(results.toString());
-        Alerts.successMessage("Calculation completed.");
-    }
-
-    private void drawGraph(int[][] matrix, int[][] previousMatrix, int focusedIndex) {
-        graphPane.getChildren().clear();
-
-        double centerX = 300;
-        double centerY = 200;
-        double radius = 150;
-
-        Circle[] nodes = new Circle[numVertices];
-        double[] angles = new double[numVertices];
+    private void calculateNodePositions() {
+        double angleStep = 2 * Math.PI / numVertices;
+        double centerX = graphCanvas.getWidth() / 2;
+        double centerY = graphCanvas.getHeight() / 2;
 
         for (int i = 0; i < numVertices; i++) {
-            angles[i] = i * 2 * Math.PI / numVertices;
-            double x = centerX + radius * Math.cos(angles[i]);
-            double y = centerY + radius * Math.sin(angles[i]);
-
-            Circle node = new Circle(x, y, 20);
-            node.setStyle("-fx-fill: lightblue; -fx-stroke: black;");
-            graphPane.getChildren().add(node);
-
-            Text label = new Text(x - 10, y + 5, String.valueOf((char) ('A' + i)));
-            graphPane.getChildren().add(label);
-
-            nodes[i] = node;
+            nodePositionsX[i] = centerX + 150 * Math.cos(i * angleStep);
+            nodePositionsY[i] = centerY + 150 * Math.sin(i * angleStep);
         }
+    }
 
+    private void renderGraph(int[][] adjacencyMatrix) {
+        GraphicsContext gc = graphCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+
+        // Draw edges
+        gc.setStroke(Color.BLACK);
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
-                if (matrix[i][j] == Integer.MAX_VALUE / 2 || i == j) {
-                    continue;
+                if (adjacencyMatrix[i][j] != 0 && adjacencyMatrix[i][j] != Integer.MAX_VALUE / 2) {
+                    gc.strokeLine(nodePositionsX[i], nodePositionsY[i], nodePositionsX[j], nodePositionsY[j]);
+                    // Draw weight label in the middle of the edge
+                    gc.fillText(String.valueOf(adjacencyMatrix[i][j]),
+                            (nodePositionsX[i] + nodePositionsX[j]) / 2,
+                            (nodePositionsY[i] + nodePositionsY[j]) / 2);
                 }
-
-                double x1 = centerX + radius * Math.cos(angles[i]);
-                double y1 = centerY + radius * Math.sin(angles[i]);
-                double x2 = centerX + radius * Math.cos(angles[j]);
-                double y2 = centerY + radius * Math.sin(angles[j]);
-
-                Line edge = new Line(x1, y1, x2, y2);
-                edge.setStyle("-fx-stroke: black;");
-                graphPane.getChildren().add(edge);
-
-                double midX = (x1 + x2) / 2;
-                double midY = (y1 + y2) / 2;
-
-                String weightText = String.valueOf(matrix[i][j]);
-                Text weightLabel = new Text(midX, midY, weightText);
-
-                if (previousMatrix != null && previousMatrix[i][j] != matrix[i][j]) {
-                    weightLabel.setStyle("-fx-fill: red; -fx-font-weight: bold;");
-                }
-                graphPane.getChildren().add(weightLabel);
             }
         }
 
-        if (focusedIndex != -1) {
-            nodes[focusedIndex].setStyle("-fx-fill: yellow; -fx-stroke: black;");
-        }
-    }
-
-    private boolean hasNegativeCycle(int[][] matrix) {
+        // Draw nodes
+        gc.setFill(Color.BLUE);
         for (int i = 0; i < numVertices; i++) {
-            if (matrix[i][i] < 0) {
-                return true;
+            if (highlightedNodes[0] != null && highlightedNodes[0] == i ||
+                    highlightedNodes[1] != null && highlightedNodes[1] == i) {
+                gc.setFill(Color.RED); // Highlight selected nodes in RED
+            } else {
+                gc.setFill(Color.BLUE); // Default color
             }
+            gc.fillOval(nodePositionsX[i] - radius, nodePositionsY[i] - radius, 2 * radius, 2 * radius);
+
+            // Draw node label
+            gc.setFill(Color.WHITE);
+            gc.fillText(String.valueOf((char) ('A' + i)), nodePositionsX[i] - 10, nodePositionsY[i] + 5);
         }
-        return false;
     }
 
+    @FXML
     public void handleBackButton(ActionEvent event) {
         Navigator.navigate(event, Navigator.visualizationChoice);
     }
-}
+
+    @FXML
+    public void handleCanvasClick(MouseEvent event) {
+        for (int i = 0; i < numVertices; i++) {
+            double dx = event.getX() - nodePositionsX[i];
+            double dy = event.getY() - nodePositionsY[i];
+            if (Math.sqrt(dx * dx + dy * dy) <= radius) {
+                if (highlightedNodes[0] == null) {
+                    // Set the first selected node
+                    highlightedNodes[0] = i;
+                    showNodeInfo(i);
+                } else if (highlightedNodes[1] == null && highlightedNodes[0] != i) {
+                    // Set the second selected node
+                    highlightedNodes[1] = i;
+                    showPathBetweenNodes(highlightedNodes[0], i);
+                } else {
+                    // Reset both selections
+                    highlightedNodes[0] = null;
+                    highlightedNodes[1] = null;
+                    resultText.setText("");
+                }
+                renderGraph(graph.getAdjacencyMatrix()); // Re-render the graph
+                break;
+            }
+        }
+    }
 
 
