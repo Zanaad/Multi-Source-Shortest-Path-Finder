@@ -6,28 +6,37 @@ Implementation of an algorithm to find the shortest paths from multiple sources 
 
 Professor [Adrian Ymeri](https://github.com/adrianymeri)
 
-# Language
-Project is developed Java language and JavaFX library.
 
-# Usage
-The system is designed to calculate and visualize shortest paths efficiently while offering a user-friendly interface. 
+# Floyd-Warshall Algorithm Visualization  
 
-Key functionalities include:
+This project visualizes the **Floyd-Warshall Algorithm**, implemented in Java with JavaFX. It provides two interactive modes: **Matrix Visualization** and **Graph Visualization**. Designed for educational purposes, the tool offers an intuitive way to understand shortest path algorithms in weighted graphs.  
 
-    1. Input Handling: Accepts weighted graph data as input, including adjacency matrices or lists.
-    2. Shortest Path Calculation: Implements efficient algorithms such as Floyd-Warshall and Johnson's.
-    3. Visualization:
-       3.1.Matrix Representation: Displays shortest path costs in a tabular format.
-       3.2.Graph Representation: Visualizes paths dynamically using JavaFX.
-    4. Multi-Source Support:Computes paths from multiple source nodes 
-      simultaneously.
+##  Features  
 
-Key Sections:
+### 🔢 Matrix Visualization  
+- Step-by-step updates of the algorithm’s adjacency matrix.  
+- Highlights changes during each iteration to demonstrate the algorithm's logic.  
+- Displays intermediate states of shortest path calculations.  
 
-    1. Input Page: Users can upload or manually input graph data.
-    2. Result Visualization: Displays computed shortest path costs and dynamic visual representations.
-    3. Navigation: Intuitive layout for transitioning between input and visualization screens.
+### 📊 Graph Visualization  
+- Graphical representation of nodes and edges with weights.  
+- Displays shortest paths between nodes once the algorithm processes the graph.  
+- **Interactive Features**:  
+  - Select a node to view its shortest paths to all other nodes.  
+  - Highlight paths between two selected nodes.  
 
+## 🚀 Installation  
+
+### Prerequisites  
+- **Java 17 or later**: Ensure Java is installed and configured on your system.  
+- **JavaFX SDK**: Add JavaFX to your development environment.  
+- **Maven or Gradle**: Dependency management tools for building the project.  
+
+### Steps  
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/Zanaad/DAA
+ 
 
    
 # Confidential
