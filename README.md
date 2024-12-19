@@ -6,8 +6,8 @@ This project implements the **Floyd-Warshall algorithm** to solve the multi-sour
 graphs. It features an interactive visualization tool using **JavaFX**, with modes for matrix updates and graph
 representations, offering an intuitive way to explore the algorithm’s functionality and results.
 
----
 
+---
 ## Features
 
 ### 🔢 Matrix Visualization
@@ -24,25 +24,10 @@ representations, offering an intuitive way to explore the algorithm’s function
     - Select a node to view its shortest paths to all other nodes.
     - Highlight paths between two selected nodes.
 
----
-
-## 🚀 Installation
-
-### Prerequisites
-
-- **Java 17 or later**: Ensure Java is installed and configured on your system.
-- **JavaFX SDK**: Add JavaFX to your development environment.
-- **Maven or Gradle**: Dependency management tools for building the project.
-
-### Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Zanaad/DAA
 
 ---
 
-## How the Floyd-Warshall Algorithm Works
+## How Floyd-Warshall Algorithm Works
 
 The **Floyd-Warshall algorithm** is a dynamic programming approach used to find the shortest paths between all pairs of
 nodes in a weighted graph.
@@ -70,6 +55,7 @@ nodes in a weighted graph.
 - **Time Complexity**: O(V^3), where V is the number of nodes.
 - **Space Complexity**: O(V^2), as it requires maintaining a distance matrix.
 
+
 ---
 
 ## Project Flow
@@ -88,6 +74,32 @@ nodes in a weighted graph.
 
 ---
 
+## Matrix and Graph Vizualization
+
+
+
+## 🚀 Installation
+
+### Prerequisites
+
+- **Java 17 or later**: Ensure Java is installed and configured on your system.
+- **JavaFX SDK**: Add JavaFX to your development environment.
+- **Maven or Gradle**: Dependency management tools for building the project.
+
+### Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Zanaad/DAA
+
+---
+
+
+# Confidential
+
+This project is developed by the authors below with all rights reserved.
+
+
 # Authors
 
 This project is developed by:
@@ -101,9 +113,5 @@ This project is developed by:
 [Zana Ademi](https://github.com/Zanaad)
 
 ---
-
-# Confidential
-
-This project is developed by the authors below with all rights reserved.
 
 
