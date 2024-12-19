@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Navigator {
-    public final static String selectAlgorithm = "AlgorithmSelection.fxml";
+    public final static String nrVertices = "VerticesInput.fxml";
     public final static String inputWeights = "EdgeWeights.fxml";
     public final static String visualizationChoice = "VisualizationChoice.fxml";
     public final static String matrixVisualization = "MatrixVisualization.fxml";

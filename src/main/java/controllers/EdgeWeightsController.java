@@ -3,18 +3,12 @@ package controllers;
 import app.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import models.Graph;
 import utils.Alerts;
 
 public class EdgeWeightsController {
-
-    public Button backButton;
-    @FXML
-    private Button nextButton;
-
     @FXML
     private GridPane verticesGrid;
 
@@ -65,8 +59,7 @@ public class EdgeWeightsController {
             for (int i = 0; i < numVertices; i++) {
                 for (int j = 0; j < numVertices; j++) {
                     String input = weightFields[i][j].getText().trim();
-                    adjacencyMatrix[i][j] = input.isEmpty() || input.equals("∞") ?
-                            Integer.MAX_VALUE / 2 : Integer.parseInt(input);
+                    adjacencyMatrix[i][j] = input.isEmpty() || input.equals("∞") ? Integer.MAX_VALUE / 2 : Integer.parseInt(input);
                 }
             }
             graph.setAdjacencyMatrix(adjacencyMatrix);
@@ -78,6 +71,6 @@ public class EdgeWeightsController {
     }
 
     public void handleBackButton(ActionEvent event) {
-        Navigator.navigate(event, Navigator.selectAlgorithm);
+        Navigator.navigate(event, Navigator.nrVertices);
     }
 }

@@ -7,16 +7,18 @@ import java.util.List;
 
 public class FloydWarshall {
     public static class PathResult {
-        public int[][] distances;
-        public int[][] next;
+        public int[][] distances;       // Shortest distances matrix
+        public int[][] next;            // Next node for path reconstruction
+        public List<int[]> changedPositions; // List of positions updated in the last step
     }
 
-    public static PathResult findShortestPaths(Graph graph) {
+    public static PathResult runFloydWarshall(Graph graph, int stepLimit) {
         int numVertices = graph.getVertices();
         int[][] dist = copyMatrix(graph.getAdjacencyMatrix());
         int[][] next = new int[numVertices][numVertices];
+        List<int[]> changes = new ArrayList<>();
 
-        // Initialize next matrix: next[i][j] = j if there's a direct edge, otherwise -1
+        // Initialize 'next' matrix
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (dist[i][j] != Integer.MAX_VALUE / 2 && i != j) {
@@ -27,13 +29,18 @@ public class FloydWarshall {
             }
         }
 
-        for (int k = 0; k < numVertices; k++) {
+        // Perform Floyd-Warshall, limiting to the current step
+        int endStep = (stepLimit == -1) ? numVertices : stepLimit;
+        for (int k = 0; k <= endStep && k < numVertices; k++) {
+            changes.clear(); // Reset changes for this step
             for (int i = 0; i < numVertices; i++) {
                 for (int j = 0; j < numVertices; j++) {
                     if (dist[i][k] != Integer.MAX_VALUE / 2 && dist[k][j] != Integer.MAX_VALUE / 2) {
-                        if (dist[i][j] > dist[i][k] + dist[k][j]) {
-                            dist[i][j] = dist[i][k] + dist[k][j];
-                            next[i][j] = next[i][k]; // Update next to follow the intermediate node
+                        int newValue = dist[i][k] + dist[k][j];
+                        if (dist[i][j] > newValue) {
+                            dist[i][j] = newValue;
+                            next[i][j] = next[i][k];
+                            changes.add(new int[]{i, j});
                         }
                     }
                 }
@@ -43,44 +50,15 @@ public class FloydWarshall {
         PathResult result = new PathResult();
         result.distances = dist;
         result.next = next;
+        result.changedPositions = new ArrayList<>(changes); // Pass only the changes from the last step
         return result;
     }
 
-    public static class StepResult {
-        public int[][] matrix;
-        public List<int[]> changedPositions;
-    }
-
-    // Generate the matrix at a specific step
-    public static StepResult generateStep(Graph graph, int step) {
-        int numVertices = graph.getVertices();
-        int[][] dist = copyMatrix(graph.getAdjacencyMatrix());
-        List<int[]> changes = new ArrayList<int[]>();
-
-        for (int k = 0; k <= step; k++) {
-            for (int i = 0; i < numVertices; i++) {
-                for (int j = 0; j < numVertices; j++) {
-                    int newValue = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
-                    if (newValue != dist[i][j]) {
-                        dist[i][j] = newValue;
-                        changes.add(new int[]{i, j});
-                    }
-                }
-            }
-        }
-
-        StepResult result = new StepResult();
-        result.matrix = dist;
-        result.changedPositions = changes;
-        return result;
-    }
-
-    public static int[][] copyMatrix(int[][] original) {
+    private static int[][] copyMatrix(int[][] original) {
         int[][] copy = new int[original.length][];
         for (int i = 0; i < original.length; i++) {
-            copy[i] = original[i].clone(); // Copies each row separately
+            copy[i] = original[i].clone();
         }
         return copy;
     }
-}
-
+} 

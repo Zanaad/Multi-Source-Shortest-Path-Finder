@@ -7,13 +7,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" styleClass="anchor-pane"
+            xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VisualizationChoiceController">
     <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton"
             prefHeight="26.0" prefWidth="28.0">
         <graphic>
             <ImageView fitHeight="16.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../icons/back.png"/>
+                <Image url="@../images/back.png"/>
             </ImageView>
         </graphic>
     </Button>
@@ -28,10 +29,10 @@
             onAction="#handleGraphVisualization" prefHeight="40.0" prefWidth="150.0" text="Graph Visualization"/>
     <ImageView fitHeight="84.0" fitWidth="84.0" layoutX="313.0" layoutY="310.0" pickOnBounds="true"
                preserveRatio="true">
-        <Image url="@../icons/mathematics.png"/>
+        <Image url="@../images/mathematics.png"/>
     </ImageView>
     <ImageView fitHeight="84.0" fitWidth="84.0" layoutX="504.0" layoutY="310.0" pickOnBounds="true"
                preserveRatio="true">
-        <Image url="@../icons/knowledge-graph.png"/>
+        <Image url="@../images/knowledge-graph.png"/>
     </ImageView>
 </AnchorPane>

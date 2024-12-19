@@ -1,11 +1,11 @@
 package controllers;
 
 import algorithms.FloydWarshall;
-import algorithms.JohnsonsAlgorithm;
 import app.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import models.Graph;
@@ -15,11 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static utils.SharedData.selectedAlgorithm;
-
 public class MatrixVisualizationController {
-
-    public Button backButton;
+    public Label step;
     @FXML
     private Button nextButton;
 
@@ -37,17 +34,10 @@ public class MatrixVisualizationController {
         numVertices = graph.getVertices();
         matrixFields = new TextField[numVertices][numVertices];
 
-        if ("Floyd-Warshall".equalsIgnoreCase(selectedAlgorithm)) {
-            // Generate the initial matrix (step 0)
-            previousMatrix = graph.getAdjacencyMatrix();
-            populateGrid(previousMatrix, null, -1);
-        } else if ("Johnson".equalsIgnoreCase(selectedAlgorithm)) {
-            int[][] johnsonResult = JohnsonsAlgorithm.findShortestPaths(graph);
-            populateGrid(johnsonResult, null, -1);
-            nextButton.setDisable(true);
-        } else {
-            Alerts.errorMessage("Unknown algorithm selected.");
-        }
+
+        previousMatrix = graph.getAdjacencyMatrix();
+        populateGrid(previousMatrix, null, -1);
+
     }
 
     private void populateGrid(int[][] matrix, List<int[]> changedPositions, int focusedIndex) {
@@ -98,13 +88,15 @@ public class MatrixVisualizationController {
         }
 
         // Generate the matrix for the current step
-        FloydWarshall.StepResult result = FloydWarshall.generateStep(graph, currentStep);
+        FloydWarshall.PathResult result = FloydWarshall.runFloydWarshall(graph, currentStep);
+
 
         // Display the matrix, highlighting changes
-        populateGrid(result.matrix, result.changedPositions, currentStep);
+        populateGrid(result.distances, result.changedPositions, currentStep);
 
         // Update the previous matrix and step
         currentStep++;
+        step.setText("Step " + currentStep);
     }
 
     @FXML

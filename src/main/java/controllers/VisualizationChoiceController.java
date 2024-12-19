@@ -6,14 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class VisualizationChoiceController {
-
-    public Button backButton;
-    @FXML
-    private Button graphVisualizationButton;
-
-    @FXML
-    private Button matrixVisualizationButton;
-
     @FXML
     void handleGraphVisualization(ActionEvent event) {
         Navigator.navigate(event, Navigator.graphVisualization);

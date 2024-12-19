@@ -9,13 +9,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EdgeWeightsController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" styleClass="anchor-pane"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.EdgeWeightsController">
     <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton"
             prefHeight="26.0" prefWidth="28.0">
         <graphic>
             <ImageView fitHeight="16.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../icons/back.png"/>
+                <Image url="@../images/back.png"/>
             </ImageView>
         </graphic>
     </Button>
@@ -24,8 +25,8 @@
             <Font size="24.0"/>
         </font>
     </Label>
-    <Button fx:id="nextButton" layoutX="786.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleNextButton"
-            prefHeight="26.0" prefWidth="50.0" text="Next"/>
+    <Button fx:id="nextButton" layoutX="770.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleNextButton"
+            prefHeight="30.0" prefWidth="74.0" text="Next"/>
     <ScrollPane layoutX="150.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0">
         <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0">

@@ -1,48 +1,96 @@
-# DAA
+# Multi-Source Shortest Path Finder
 
-# Problem Description
-Implementation of an algorithm to find the shortest paths from multiple sources in a weighted graph by using Floyd Warshall's algorithm. The solution should optimize both time and space.
+## Overview
 
+This project implements the **Floyd-Warshall algorithm** to solve the multi-source shortest path problem in weighted
+graphs. It features an interactive visualization tool using **JavaFX**, with modes for matrix updates and graph
+representations, offering an intuitive way to explore the algorithm’s functionality and results.
 
-Professor [Adrian Ymeri](https://github.com/adrianymeri)
+---
 
+## Features
 
-# Floyd-Warshall Algorithm Visualization  
+### 🔢 Matrix Visualization
 
-This project visualizes the **Floyd-Warshall Algorithm**, implemented in Java with JavaFX. It provides two interactive modes: **Matrix Visualization** and **Graph Visualization**. Designed for educational purposes, the tool offers an intuitive way to understand shortest path algorithms in weighted graphs.  
+- Step-by-step updates of the algorithm’s adjacency matrix.
+- Highlights changes during each iteration to demonstrate the algorithm's logic.
+- Displays intermediate states of shortest path calculations.
 
-##  Features  
+### 📊 Graph Visualization
 
-### 🔢 Matrix Visualization  
-- Step-by-step updates of the algorithm’s adjacency matrix.  
-- Highlights changes during each iteration to demonstrate the algorithm's logic.  
-- Displays intermediate states of shortest path calculations.  
+- Graphical representation of nodes and edges with weights.
+- Displays shortest paths between nodes once the algorithm processes the graph.
+- **Interactive Features**:
+    - Select a node to view its shortest paths to all other nodes.
+    - Highlight paths between two selected nodes.
 
-### 📊 Graph Visualization  
-- Graphical representation of nodes and edges with weights.  
-- Displays shortest paths between nodes once the algorithm processes the graph.  
-- **Interactive Features**:  
-  - Select a node to view its shortest paths to all other nodes.  
-  - Highlight paths between two selected nodes.  
+---
 
-## 🚀 Installation  
+## 🚀 Installation
 
-### Prerequisites  
-- **Java 17 or later**: Ensure Java is installed and configured on your system.  
-- **JavaFX SDK**: Add JavaFX to your development environment.  
-- **Maven or Gradle**: Dependency management tools for building the project.  
+### Prerequisites
 
-### Steps  
-1. Clone the repository:  
+- **Java 17 or later**: Ensure Java is installed and configured on your system.
+- **JavaFX SDK**: Add JavaFX to your development environment.
+- **Maven or Gradle**: Dependency management tools for building the project.
+
+### Steps
+
+1. Clone the repository:
    ```bash
    git clone https://github.com/Zanaad/DAA
- 
 
-   
-# Confidential
-This project is developed by the authors below with all rights reserved.
+---
+
+## How the Floyd-Warshall Algorithm Works
+
+The **Floyd-Warshall algorithm** is a dynamic programming approach used to find the shortest paths between all pairs of
+nodes in a weighted graph.
+
+### Steps:
+
+1. **Initialization**:
+    - Represent the graph with an adjacency matrix `dist[][]`, where `dist[i][j]` contains the weight of the edge
+      between node `i` and node `j`.
+    - Set `dist[i][j]` to infinity if there is no direct edge between `i` and `j`, and `dist[i][i] = 0` for all nodes.
+
+2. **Iterative Updates**:
+    - For each intermediate node `k`, check if a shorter path exists between nodes `i` and `j` via `k`. Update the
+      distance matrix as:
+      ```plaintext
+      dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+      ```
+
+3. **Final Result**:
+    - After running through all possible intermediate nodes, `dist[i][j]` contains the shortest path from node `i` to
+      node `j`.
+
+### Time and Space Complexity:
+
+- **Time Complexity**: O(V^3), where V is the number of nodes.
+- **Space Complexity**: O(V^2), as it requires maintaining a distance matrix.
+
+---
+
+## Project Flow
+
+1. **User Input**:
+    - Input the number of vertices in the graph.
+    - Add weights for the edges between vertices.
+2. **Algorithm Execution**:
+    - The Floyd-Warshall algorithm calculates the shortest paths and iteratively updates the adjacency matrix.
+3. **Visualization**:
+    - ***Matrix Visualization***: Observe step-by-step updates to the adjacency matrix.
+    - ***Graph Visualization***: Interact with the graph, select nodes, and explore shortest paths.
+4. **User Interaction**:
+    - Switch between visualization modes.
+    - Click on nodes to view the shortest paths and weights.
+
+---
 
 # Authors
+
+This project is developed by:
 
 [Kaltrina Kurtaj](https://github.com/kaltrinakurtaj)
 
@@ -51,4 +99,11 @@ This project is developed by the authors below with all rights reserved.
 [Yllka Kastrati](https://github.com/Yllka5)
 
 [Zana Ademi](https://github.com/Zanaad)
+
+---
+
+# Confidential
+
+This project is developed by the authors below with all rights reserved.
+
 
