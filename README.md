@@ -24,6 +24,15 @@ representations, offering an intuitive way to explore the algorithm’s function
     - Select a node to view its shortest paths to all other nodes.
     - Highlight paths between two selected nodes.
 
+---
+
+## 🚀 Installation
+
+### Prerequisites
+
+- **Java 17 or later**: Ensure Java is installed and configured on your system.
+- **JavaFX SDK**: Add JavaFX to your development environment.
+- **Maven or Gradle**: Dependency management tools for building the project.
 
 ---
 
@@ -88,20 +97,13 @@ The steps are outlined below:
 
 
 
+![video](https://github.com/user-attachments/assets/8332a301-f624-4d9b-a094-e65ac31b19f5)
 
 
 
+![video](https://github.com/user-attachments/assets/ed449e40-4e76-48d8-9d3b-cbaa2dbb73a7)
 
 
-
-
-## 🚀 Installation
-
-### Prerequisites
-
-- **Java 17 or later**: Ensure Java is installed and configured on your system.
-- **JavaFX SDK**: Add JavaFX to your development environment.
-- **Maven or Gradle**: Dependency management tools for building the project.
 
 ### Steps
 
