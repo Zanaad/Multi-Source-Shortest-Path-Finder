@@ -131,10 +131,11 @@ public class GraphVisualizationController {
                     double midY = (startY + endY) / 2;
 
                     // Check for a bidirectional edge
-                    if (adjacencyMatrix[j][i] != 0 && adjacencyMatrix[i][j] != 0) {
+                    if (adjacencyMatrix[j][i] != 0 && adjacencyMatrix[i][j] != 0 && adjacencyMatrix[i][j] != Integer.MAX_VALUE / 2 && adjacencyMatrix[j][i] != Integer.MAX_VALUE / 2) {
                         // Adjust positions to avoid overlap for bidirectional edges
-                        double offsetX = -(endY - startY) / Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) * 10;
-                        double offsetY = (endX - startX) / Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) * 10;
+                        double a = Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2);
+                        double offsetX = -(endY - startY) / Math.sqrt(a) * 10;
+                        double offsetY = (endX - startX) / Math.sqrt(a) * 10;
 
                         // Position weight labels
                         gc.setFill(Color.BLACK);
@@ -269,5 +270,4 @@ public class GraphVisualizationController {
     }
 
 }
-
 
