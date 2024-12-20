@@ -88,20 +88,23 @@ nodes in a weighted graph.
 Before selecting the type of visualization, we first specify the algorithm and the number of vertices, followed by defining the weights for the edges. 
 The steps are outlined below:
 
-![image](https://github.com/user-attachments/assets/4ef0e2a7-d60a-4c86-ad1a-285a48984f2a)
 
-![image](https://github.com/user-attachments/assets/891e407b-ecae-4e01-b3b5-2269e4ae9062)
+![e para](https://github.com/user-attachments/assets/706bf341-4cfa-458a-9968-3728fcb45033)
+
+![dytaa](https://github.com/user-attachments/assets/90d4cac8-f471-474d-920a-6f254b23bc68)
 
 ![image](https://github.com/user-attachments/assets/03addefd-bd43-4abf-b25f-0051c3ae3970)
 
 
 
 
-[Video](https://github.com/user-attachments/assets/8332a301-f624-4d9b-a094-e65ac31b19f5)
-
 
 
 [Video](https://github.com/user-attachments/assets/ed449e40-4e76-48d8-9d3b-cbaa2dbb73a7)
+
+
+
+[Video](https://github.com/user-attachments/assets/8332a301-f624-4d9b-a094-e65ac31b19f5)
 
 
 
