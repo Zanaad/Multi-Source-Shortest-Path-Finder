@@ -1,15 +1,16 @@
 package algorithms;
 
 import models.Graph;
+import utils.Alerts;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FloydWarshall {
     public static class PathResult {
-        public int[][] distances;       // Shortest distances matrix
-        public int[][] next;            // Next node for path reconstruction
-        public List<int[]> changedPositions; // List of positions updated in the last step
+        public int[][] distances;
+        public int[][] next;
+        public List<int[]> changedPositions;
     }
 
     public static PathResult runFloydWarshall(Graph graph, int stepLimit) {
@@ -18,7 +19,6 @@ public class FloydWarshall {
         int[][] next = new int[numVertices][numVertices];
         List<int[]> changes = new ArrayList<>();
 
-        // Initialize 'next' matrix
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (dist[i][j] != Integer.MAX_VALUE / 2 && i != j) {
@@ -32,7 +32,7 @@ public class FloydWarshall {
         // Perform Floyd-Warshall, limiting to the current step
         int endStep = (stepLimit == -1) ? numVertices : stepLimit;
         for (int k = 0; k <= endStep && k < numVertices; k++) {
-            changes.clear(); // Reset changes for this step
+            changes.clear();
             for (int i = 0; i < numVertices; i++) {
                 for (int j = 0; j < numVertices; j++) {
                     if (dist[i][k] != Integer.MAX_VALUE / 2 && dist[k][j] != Integer.MAX_VALUE / 2) {
@@ -46,11 +46,18 @@ public class FloydWarshall {
                 }
             }
         }
+        // Check for negative weight cycles
+        for (int i = 0; i < numVertices; i++) {
+            if (dist[i][i] < 0) {
+                Alerts.errorMessage("Graph contains a negative weight cycle! Algorithm stopped.");
+                throw new IllegalStateException("Negative weight cycle detected at vertex " + i);
+            }
+        }
 
         PathResult result = new PathResult();
         result.distances = dist;
         result.next = next;
-        result.changedPositions = new ArrayList<>(changes); // Pass only the changes from the last step
+        result.changedPositions = new ArrayList<>(changes);
         return result;
     }
 

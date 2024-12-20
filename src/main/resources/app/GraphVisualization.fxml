@@ -9,23 +9,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" styleClass="anchor-pane"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.GraphVisualizationController">
-    <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton"
-            prefHeight="26.0" prefWidth="28.0">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="anchor-pane" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GraphVisualizationController">
+    <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="26.0" prefWidth="28.0">
         <graphic>
             <ImageView fitHeight="16.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../images/back.png"/>
+                <Image url="@../images/back.png" />
             </ImageView>
         </graphic>
     </Button>
-    <Canvas fx:id="graphCanvas" height="400.0" layoutX="75.0" layoutY="66.0" onMouseClicked="#handleCanvasClick"
-            width="750.0"/>
+    <Canvas fx:id="graphCanvas" height="400.0" layoutX="75.0" layoutY="66.0" onMouseClicked="#handleCanvasClick" width="750.0" />
     <Text fx:id="resultText" layoutX="75.0" layoutY="466.0" wrappingWidth="560.0000305175781">
         <font>
-            <Font name="Arial" size="14"/>
+            <Font name="Arial" size="14" />
         </font>
     </Text>
-    <Label layoutX="250.0" layoutY="33.0" text="Select one node to get the paths to all the other nodes"/>
+    <Label layoutX="92.0" layoutY="33.0" text="Select a node to view the paths to all other nodes, or select two nodes to highlight the path between them." />
 </AnchorPane>
