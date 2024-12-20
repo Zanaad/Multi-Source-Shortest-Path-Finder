@@ -34,7 +34,15 @@ representations, offering an intuitive way to explore the algorithm’s function
 - **JavaFX SDK**: Add JavaFX to your development environment.
 - **Maven or Gradle**: Dependency management tools for building the project.
 
+  ### Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Zanaad/DAA
+
 ---
+
+
 
 ## How Floyd-Warshall Algorithm Works
 
