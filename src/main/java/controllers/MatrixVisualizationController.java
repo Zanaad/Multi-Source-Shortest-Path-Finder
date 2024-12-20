@@ -40,9 +40,37 @@ public class MatrixVisualizationController {
 
     }
 
+    @FXML
+    void handleNextButton() {
+        if (currentStep >= numVertices) {
+            Alerts.successMessage("Algorithm completed. No more steps.");
+            nextButton.setDisable(true);
+            return;
+        }
+        try {
+            // Generate the matrix for the current step
+            FloydWarshall.PathResult result = FloydWarshall.runFloydWarshall(graph, currentStep);
+
+            // Display the matrix, highlighting changes
+            populateGrid(result.distances, result.changedPositions, currentStep);
+
+            currentStep++;
+            step.setText("Step " + currentStep);
+        } catch (IllegalStateException e) {
+            // Handle the negative weight cycle error
+            Alerts.errorMessage(e.getMessage());
+            nextButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    public void handleBackButton(ActionEvent event) {
+        Navigator.navigate(event, Navigator.visualizationChoice);
+    }
+
     private void populateGrid(int[][] matrix, List<int[]> changedPositions, int focusedIndex) {
-        weightsGrid.getChildren().clear(); // Clear existing grid elements
-        Set<String> changesSet = new HashSet<>(); // Set for fast lookup of changes
+        weightsGrid.getChildren().clear();
+        Set<String> changesSet = new HashSet<>();
 
         if (changedPositions != null) {
             for (int[] pos : changedPositions) {
@@ -57,50 +85,22 @@ public class MatrixVisualizationController {
                 field.setPrefWidth(30);
                 field.setEditable(false);
 
-                // Set the text of the cell
                 String valueText = matrix[i][j] == Integer.MAX_VALUE / 2 ? "∞" : String.valueOf(matrix[i][j]);
                 field.setText(valueText);
 
-                // Highlight changed cells
                 if (changesSet.contains(i + "," + j)) {
-                    field.setStyle("-fx-background-color: #FFCC00;"); // Yellow for changed cells
+                    field.setStyle("-fx-background-color: #FFCC00;");
                 } else {
-                    field.setStyle(""); // Reset style
+                    field.setStyle("");
                 }
 
-                // Highlight focused row/column
                 if (focusedIndex != -1 && (i == focusedIndex || j == focusedIndex)) {
-                    field.setStyle("-fx-background-color: #ADD8E6;"); // Light blue
+                    field.setStyle("-fx-background-color: #ADD8E6;");
                 }
 
                 weightsGrid.add(field, j, i);
                 matrixFields[i][j] = field;
             }
         }
-    }
-
-    @FXML
-    void handleNextButton() {
-        if (currentStep >= numVertices) {
-            Alerts.successMessage("Algorithm completed. No more steps.");
-            nextButton.setDisable(true);
-            return;
-        }
-
-        // Generate the matrix for the current step
-        FloydWarshall.PathResult result = FloydWarshall.runFloydWarshall(graph, currentStep);
-
-
-        // Display the matrix, highlighting changes
-        populateGrid(result.distances, result.changedPositions, currentStep);
-
-        // Update the previous matrix and step
-        currentStep++;
-        step.setText("Step " + currentStep);
-    }
-
-    @FXML
-    public void handleBackButton(ActionEvent event) {
-        Navigator.navigate(event, Navigator.visualizationChoice);
     }
 }
