@@ -101,7 +101,9 @@ The steps are outlined below:
 
 ![dytaa](https://github.com/user-attachments/assets/90d4cac8-f471-474d-920a-6f254b23bc68)
 
-![image](https://github.com/user-attachments/assets/03addefd-bd43-4abf-b25f-0051c3ae3970)
+![e treta](https://github.com/user-attachments/assets/5876968a-32b2-43e1-9dc7-16a5b0ace7b3)
+
+
 
 
 
