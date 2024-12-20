@@ -116,15 +116,6 @@ The steps are outlined below:
 
 
 
-### Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Zanaad/DAA
-
----
-
-
 # Confidential
 
 This project is developed by the authors below with all rights reserved.
