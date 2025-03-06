@@ -9,7 +9,7 @@ import utils.Alerts;
 
 public class VerticesInputController {
     @FXML
-    private TextField numVerticesTextField;
+    TextField numVerticesTextField;
     private Graph graph;
     private int numVertices;
 

@@ -49,7 +49,6 @@ public class FloydWarshall {
         // Check for negative weight cycles
         for (int i = 0; i < numVertices; i++) {
             if (dist[i][i] < 0) {
-                Alerts.errorMessage("Graph contains a negative weight cycle! Algorithm stopped.");
                 throw new IllegalStateException("Negative weight cycle detected at vertex " + i);
             }
         }

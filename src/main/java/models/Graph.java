@@ -27,15 +27,9 @@ public class Graph {
 
     public static Graph getInstance() {
         if (instance == null) {
-            Alerts.errorMessage("Graph instance not initialized. Call getInstance(int numVertices) first.");
+            Alerts.errorMessage("Graph is not initialized");
         }
         return instance;
-    }
-
-
-    public void addEdge(int source, int destination, int weight) {
-        edges.add(new Edge(source, destination, weight));
-        adjacencyMatrix[source][destination] = weight;
     }
 
     public int[][] getAdjacencyMatrix() {
@@ -55,10 +49,6 @@ public class Graph {
         return numVertices;
     }
 
-    public void setVertices(int numVertices) {
-        this.numVertices = numVertices;
-    }
-
     private void updateEdgesFromMatrix() {
         edges.clear(); // Clear any existing edges
         for (int i = 0; i < numVertices; i++) {
@@ -69,4 +59,9 @@ public class Graph {
             }
         }
     }
+
+    public static void resetInstance() {
+        instance = null;
+    }
+
 }
